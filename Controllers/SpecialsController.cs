@@ -1,0 +1,30 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using BlazingPizza.Data;
+
+namespace BlazingPizza.Controllers;
+
+    [ApiController]
+    [Route("specials")]
+    public class SpecialsController : ControllerBase
+    {
+        private readonly PizzaStoreContext _context;
+
+        public SpecialsController(PizzaStoreContext context)
+        {
+            _context = context;
+        }
+
+        // GET /specials
+        [HttpGet]
+        public async Task<ActionResult<List<PizzaSpecial>>> GetSpecials()
+        {
+            var specials = await _context.Specials
+                                         .OrderByDescending(s => s.BasePrice)
+                                         .ToListAsync();
+            return Ok(specials);
+        }
+    }
