@@ -21,10 +21,7 @@ namespace BlazingPizza.Controllers;
         // GET /specials
         [HttpGet]
         public async Task<ActionResult<List<PizzaSpecial>>> GetSpecials()
-        {
-            var specials = await _context.Specials
-                                         .OrderByDescending(s => s.BasePrice)
-                                         .ToListAsync();
-            return Ok(specials);
+        {            
+            return (await _context.Specials.ToListAsync()).OrderByDescending(s => s.BasePrice).ToList();
         }
     }
